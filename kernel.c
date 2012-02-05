@@ -21,6 +21,7 @@ void kmain(void *multiboot_info, unsigned int magic)
         // Boot was not performed correctly
     }
 
+    init_console();
 
     /* VRAM starts at 0xB8000 and consists of pairs of bytes:
      * vram[0] = character;
