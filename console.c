@@ -1,3 +1,5 @@
+#include <console.h>
+
 void init_console(void)
 {
     unsigned char *vram = (unsigned char *) 0xB8000;

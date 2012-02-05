@@ -14,7 +14,9 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-void kmain(void *multiboot_info, unsigned int magic)
+#include <console.h>
+
+void kinit(void *multiboot_info, unsigned int magic)
 {
     if (magic != 0x2BADB002)
     {
