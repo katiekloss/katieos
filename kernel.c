@@ -25,21 +25,5 @@ void kinit(void *multiboot_info, unsigned int magic)
 
     init_console();
 
-    /* VRAM starts at 0xB8000 and consists of pairs of bytes:
-     * vram[0] = character;
-     * vram[1] = attribute_for_character;
-     * For the section below, attribute 0x07 is 'gray on black'
-     */
-    
-    const char *string = "Hello, world!";
-    unsigned char *vram = (unsigned char *) 0xB8000;
-    int i;
-
-    for(i = 0; i < 13; i++)
-    {
-        *vram = string[i];
-        vram++;
-        *vram = 0x07;
-        vram++;
-    }
+    printk("Hello, world!");
 }
