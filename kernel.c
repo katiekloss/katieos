@@ -15,8 +15,9 @@
  */
 
 #include <console.h>
+#include <multiboot.h>
 
-void kinit(void *multiboot_info, unsigned int magic)
+void kinit(multiboot_info_t *multiboot_info, unsigned int magic)
 {
     if (magic != 0x2BADB002)
     {
