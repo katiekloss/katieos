@@ -14,7 +14,24 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#include <stddef.h>
 #include <string.h>
+
+// XXX: This is only for debugging, not production use!
+void long_to_str(unsigned long n, char *dest)
+{
+    char digits[11];
+    digits[10] = '\0';
+    int i;
+    for(i = 9; i >= 0; i--)
+    {
+        int digit = n % 10;
+        digits[i] = digit + 48;
+        n = (n - digit) / 10;
+        if(n == 0) break;
+    }
+    strncpy(dest, digits + i, 11 - i);
+}
 
 int strlen(const char *s)
 {
@@ -78,3 +95,11 @@ char * strstr(const char *src, const char *sub)
     return (char *) 0;
 }
 
+void memset(void *dst, unsigned char byte, size_t n)
+{
+    void *i;
+    for(i = dst; i < (dst + n); i++)
+    {
+        *((unsigned char *)i) = byte;
+    }
+}
