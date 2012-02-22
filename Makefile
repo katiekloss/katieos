@@ -3,8 +3,10 @@ CFLAGS = -Wall -Wextra -nostdlib -fno-builtin
 CFLAGS += -Iinclude/
 OBJECTS = loader.o kernel.o console.o libc.o
 
-build: $(OBJECTS)
-	ld -T linker.ld -o kernel.bin $(OBJECTS) 
+build: $(OBJECTS) kernel.bin
+
+kernel.bin:
+	ld -T linker.ld -o $@ $(OBJECTS)
 
 loader.o: loader.s
 	nasm -f elf -o loader.o loader.s
