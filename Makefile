@@ -1,7 +1,7 @@
 CC = clang
 CFLAGS = -Wall -Wextra -nostdlib -fno-builtin
 CFLAGS += -Iinclude/
-OBJECTS = loader.o kernel.o console.o libc.o
+OBJECTS = loader.o kernel.o console.o libc.o mm.o
 
 build: $(OBJECTS) kernel.bin
 

@@ -16,6 +16,7 @@
 
 #include <console.h>
 #include <multiboot.h>
+#include <mm.h>
 
 void kinit(multiboot_info_t *multiboot_info, unsigned int magic)
 {
@@ -27,4 +28,5 @@ void kinit(multiboot_info_t *multiboot_info, unsigned int magic)
     init_console();
 
     printk("Hello, world!");
+    init_mm(multiboot_info->mem_upper);
 }
