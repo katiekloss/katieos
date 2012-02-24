@@ -66,10 +66,55 @@ void init_mm(unsigned long upper_mem_size)
 
 void * kmalloc(size_t bytes)
 {
-    // Walk the chunk list and return the first-fitting free chunk
+    // Walk over the list of chunks until we find a set of free
+    // adjacent chunks that fits the request
+    int i, j, required_chunks;
+
+    required_chunks = bytes / KERN_CHUNK_SIZE;
+    if(required_chunks * KERN_CHUNK_SIZE < bytes) required_chunks++;
+
+    for(i = 0; i < KERN_CHUNKS;)
+    {
+        if(chunk_list[i].flags & CHUNK_FLAGS_IN_USE) i++;
+        else
+        {
+            for(j = 1; j < required_chunks && i + j < KERN_CHUNKS; j++)
+            {
+                if(chunk_list[i + j].flags & CHUNK_FLAGS_IN_USE) break;
+            }
+    
+            if(j == required_chunks) break;
+            else i += j;
+        }   
+    }
+    if(i == KERN_CHUNKS)
+    {
+        return (void *) 0; // Out of memory!
+    }
+    
+    for(j = 0; j < required_chunks; j++)
+    {
+        chunk_list[i + j].flags |= CHUNK_FLAGS_IN_USE;
+        if(j > 0) chunk_list[i + j - 1].next = &chunk_list[i + j];
+    }
+
+    return (void *) chunk_list[i].start;
 }
 
 void kfree(void *ptr)
 {
     // Free the chunk at ptr
+    int i;
+    for(i = 0; i < KERN_CHUNKS; i++)
+    {
+        if(chunk_list[i].start == ptr) break;
+    }
+
+    do
+    {
+        chunk_list[i].flags ^= CHUNK_FLAGS_IN_USE;
+        chunk_list[i].next = 0;
+        i++;
+    }
+    while(chunk_list[i].next != 0);
 }
